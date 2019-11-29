@@ -3,8 +3,9 @@
 This is a proof of concept Spinnaker Deck plugin with library sharing and code splitting.
 
 This plugin exports a React component which lazy loads a second React component after 2 seconds.
-The second React component uses a components from `@spinnaker/core`: `FormField` and `TextInput`.
-This plugin does not bundle any React or `@spinnaker/core` code.
+The second React component uses components 
+`SpinFormik`, `FormikFormField`, `TextInput`, and `NumberInput' (from `@spinnaker/core`).
+This plugin does not bundle any React or `@spinnaker/core` code (the bundle size is 8kb).
 Instead, it uses the already loaded modules exposed by deck in this pr: https://github.com/spinnaker/deck/pull/7662 .
 
 ## Getting started
