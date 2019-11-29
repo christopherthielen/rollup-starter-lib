@@ -17,17 +17,18 @@ yarn
 yarn build
 ```
 
-Copy (or symlink) the plugin `dist` directory into deck
+Copy (or symlink) the plugin's `dist` directory into deck
 ```
-mkdir ~/deck/plugins
-cp dist/* deck/plugins
+mkdir ~/deck/plugin
+cp dist/* deck/plugin
 ```
 or
 ```
-ln -s dist ~/deck/plugins
+ln -s dist ~/deck/plugin
 ```
 
-After loading deck (with [this PR](https://github.com/spinnaker/deck/pull/7662) included), use native dynamic `import()` to load the code.
+After loading deck (with [this PR](https://github.com/spinnaker/deck/pull/7662) included),
+use native dynamic `import()` to load the code.
 Then render the exported React components somewhere.
 
 From the javascript console:
