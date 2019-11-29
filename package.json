@@ -1,9 +1,7 @@
 {
   "name": "rollup-starter-lib",
   "version": "1.0.0",
-  "main": "dist/how-long-till-lunch.cjs.js",
-  "module": "dist/how-long-till-lunch.esm.js",
-  "browser": "dist/how-long-till-lunch.umd.js",
+  "module": "dist/main.js",
   "dependencies": {
     "@spinnaker/core": "0.0.432",
     "react": "^16.12.0",
