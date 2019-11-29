@@ -33,7 +33,7 @@ use native dynamic `import()` to load the code.
 Then render the exported React components somewhere.
 
 From the javascript console:
-```
+```js
 import('/plugin/main.js').then(module => {
     const { react, react_dom } = spinnaker.plugins.sharedLibraries;
     react_dom.render(react.createElement(module.plugin.component), document.querySelector('.navbar-inverse'))
