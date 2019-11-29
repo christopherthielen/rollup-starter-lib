@@ -4,29 +4,32 @@ import typescript from 'rollup-plugin-typescript';
 import postCss from 'rollup-plugin-postcss';
 import externalGlobals from 'rollup-plugin-external-globals';
 
-const spinnakerBuiltInModules = [
-  'lodash',
-  'react',
-  'react-dom',
-  '@spinnaker/core',
-];
-
-const spinnakerSharedLibraries = spinnakerBuiltInModules.reduce((globalsMap, builtIn) => {
-  let globalVariable = `spinnaker.plugins.sharedLibraries.${builtIn.replace(/[^a-zA-Z0-9_]/g, '_')}`;
-  return { ...globalsMap, [ builtIn ]: globalVariable }
-}, {});
-
 export default [
   {
     input: 'src/main.ts',
-    external: ['@spinnaker/core', 'react', 'react-dom'],
     plugins: [
       nodeResolve(),
       commonjs(),
       typescript(),
-      externalGlobals(spinnakerSharedLibraries),
-        postCss(),
+      // map imports from shared libraries (react, etc) to global variables exposed by spinnaker
+      externalGlobals(spinnakerSharedLibraries()),
+      // import from .css, .less, and inject into the document <head></head>
+      postCss(),
     ],
     output: [{ dir: 'dist', format: 'es', }]
   }
 ];
+
+function spinnakerSharedLibraries() {
+  const libraries = ['lodash', 'react', 'react-dom', '@spinnaker/core'];
+
+  function getGlobalVariable(libraryName) {
+    const prefix = 'spinnaker.plugins.sharedLibraries';
+    const sanitizedLibraryName = libraryName.replace(/[^a-zA-Z0-9_]/g, '_');
+    return `${prefix}.${sanitizedLibraryName}`;
+  }
+
+  return libraries.reduce((globalsMap, libraryName) => {
+    return { ...globalsMap, [ libraryName ]: getGlobalVariable(libraryName) }
+  }, {});
+}

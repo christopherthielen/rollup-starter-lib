@@ -13,6 +13,7 @@
   },
   "devDependencies": {
     "@types/ms": "^0.7.30",
+    "formik": "^2.0.6",
     "rollup": "^1.27.5",
     "rollup-plugin-commonjs": "^9.2.0",
     "rollup-plugin-external-globals": "^0.4.0",

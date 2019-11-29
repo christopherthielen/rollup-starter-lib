@@ -1,46 +1,40 @@
-# rollup-starter-lib
+# spinnaker-deck-plugin-proof-of-concept
 
-[![Greenkeeper badge](https://badges.greenkeeper.io/rollup/rollup-starter-lib.svg)](https://greenkeeper.io/)
+This is a proof of concept Spinnaker Deck plugin with library sharing and code splitting.
 
-This repo contains a bare-bones example of how to create a library using Rollup, including importing a module from `node_modules` and converting it from CommonJS.
-
-We're creating a library called `how-long-till-lunch`, which usefully tells us how long we have to wait until lunch, using the [ms](https://github.com/zeit/ms) package:
-
-```js
-console.log('it will be lunchtime in ' + howLongTillLunch());
-```
+This plugin exports a React component which lazy loads a second React component after 2 seconds.
+The second React component uses a components from `@spinnaker/core`: `FormField` and `TextInput`.
+This plugin does not bundle any React or `@spinnaker/core` code.
+Instead, it uses the already loaded modules exposed by deck in this pr: https://github.com/spinnaker/deck/pull/7662 .
 
 ## Getting started
 
-Clone this repository and install its dependencies:
+Clone this repository and install its dependencies.
+Build the library bundles into `dist`, generating a file for each code split point.
 
 ```bash
-git clone https://github.com/rollup/rollup-starter-lib
-cd rollup-starter-lib
-npm install
+yarn
+yarn build
 ```
 
-`npm run build` builds the library to `dist`, generating three files:
+Copy (or symlink) the plugin `dist` directory into deck
+```
+mkdir ~/deck/plugins
+cp dist/* deck/plugins
+```
+or
+```
+ln -s dist ~/deck/plugins
+```
 
-* `dist/how-long-till-lunch.cjs.js`
-    A CommonJS bundle, suitable for use in Node.js, that `require`s the external dependency. This corresponds to the `"main"` field in package.json
-* `dist/how-long-till-lunch.esm.js`
-    an ES module bundle, suitable for use in other people's libraries and applications, that `import`s the external dependency. This corresponds to the `"module"` field in package.json
-* `dist/how-long-till-lunch.umd.js`
-    a UMD build, suitable for use in any environment (including the browser, as a `<script>` tag), that includes the external dependency. This corresponds to the `"browser"` field in package.json
+After loading deck (with [this PR](https://github.com/spinnaker/deck/pull/7662) included), use native dynamic `import()` to load the code.
+Then render the exported React components somewhere.
 
-`npm run dev` builds the library, then keeps rebuilding it whenever the source files change using [rollup-watch](https://github.com/rollup/rollup-watch).
+From the javascript console:
+```
+import('/plugin/main.js').then(module => {
+    const { react, react_dom } = spinnaker.plugins.sharedLibraries;
+    react_dom.render(react.createElement(module.plugin.component), document.querySelector('.navbar-inverse'))
+});
+```
 
-`npm test` builds the library, then tests it.
-
-## Variations
-
-* [babel](https://github.com/rollup/rollup-starter-lib/tree/babel) — illustrates writing the source code in ES2015 and transpiling it for older environments with [Babel](https://babeljs.io/)
-* [buble](https://github.com/rollup/rollup-starter-lib/tree/buble) — similar, but using [Bublé](https://buble.surge.sh/) which is a faster alternative with less configuration
-* [TypeScript](https://github.com/rollup/rollup-starter-lib/tree/typescript) — uses [TypeScript](https://www.typescriptlang.org/) for type-safe code and transpiling
-
-
-
-## License
-
-[MIT](LICENSE).
