@@ -1,8 +1,13 @@
-import ms from 'ms';
-import lunchtime from './lunchtime.js';
-import millisecondsUntil from './millisecondsUntil.js';
+import { ReactComponent } from './ReactComponent';
 
-export default function howLongUntilLunch(hours: number = 12, minutes: number = 30): string {
-	const millisecondsUntilLunchTime = millisecondsUntil(lunchtime(hours, minutes));
-	return ms(millisecondsUntilLunchTime, { long: true });
-}
+const plugin = {
+  name: 'spinnaker-sample-plugin',
+  component: ReactComponent,
+  init: function(args: any) {
+    console.log('init');
+    console.log(args);
+  }
+};
+
+export { plugin };
+
