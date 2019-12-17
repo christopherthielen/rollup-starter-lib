@@ -1,9 +1,8 @@
 import * as React from 'react';
-import { FormikFormField, HelpField, NumberInput, SpinFormik, TextInput, Validators } from '@spinnaker/core';
-
-interface ILazyComponentProps {
-  name: string;
-}
+import {
+  FormikFormField, FormikStageConfig, HelpField, IStageConfigProps, NumberInput, TextInput,
+  Validators
+} from '@spinnaker/core';
 
 function LazyComponentForm() {
   return (
@@ -26,16 +25,19 @@ function LazyComponentForm() {
   );
 }
 
-export function LazyComponent(props: ILazyComponentProps) {
+export function LazyComponent(props: IStageConfigProps) {
+  const {stage, updateStage, pipeline, application, } = props;
   return (
     <>
-      <h1>Hello {props.name} - from Lazy Loaded Component</h1>
+      <h1>Hello from a Lazy Loaded Form Component</h1>
       <p>These are SpinFormik, FormikFormField and Inputs from @spinnaker/core</p>
-      <SpinFormik
-        initialValues={{ email: null, number: null }}
-        onSubmit={() => undefined}
-        render={props => <LazyComponentForm />}
-      ></SpinFormik>
+      <FormikStageConfig
+        stage={stage}
+        onChange={updateStage}
+        pipeline={pipeline}
+        application={application}
+        render={props => <LazyComponentForm/>}
+      />
     </>
   );
 }

@@ -1,11 +1,10 @@
-import { ReactComponent } from './ReactComponent';
+import { customStage  } from './CustomStage'
 
 const plugin = {
   name: 'spinnaker-sample-plugin',
-  component: ReactComponent,
-  init: function(args: any) {
+  initialize: function(pluginApi: any) {
     console.log('init');
-    console.log(args);
+    pluginApi.registerStage(customStage);
   }
 };
 
